@@ -397,7 +397,7 @@ pub fn build(b: *std.Build) void {
         .style = .{ .cmake = .{ .path = "src/rime/build_config.h.in" } },
         .include_path = "src/rime/build_config.h",
     }, .{
-        .RIME_BOOST_SIGNALS2 = null,
+        .RIME_BOOST_SIGNALS2 = 1,
         .RIME_ENABLE_LOGGING = null,
         .RIME_DATA_DIR = "rime-data",
         .RIME_PLUGINS_DIR = "rime-plugins",
