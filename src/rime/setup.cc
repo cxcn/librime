@@ -26,7 +26,8 @@ namespace fs = boost::filesystem;
 namespace rime {
 
 #define Q(x) #x
-RIME_API RIME_MODULE_LIST(kDefaultModules, "default" RIME_EXTRA_MODULES);
+// RIME_API RIME_MODULE_LIST(kDefaultModules, "default", RIME_EXTRA_MODULES);
+RIME_API RIME_MODULE_LIST(kDefaultModules, "default");
 #undef Q
 RIME_MODULE_LIST(kDeployerModules, "deployer");
 RIME_MODULE_LIST(kLegacyModules, "legacy");
