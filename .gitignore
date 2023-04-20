@@ -12,4 +12,4 @@ env.bat
 node_modules/
 *~
 .*.swp
-zig-*
+zig-*/
