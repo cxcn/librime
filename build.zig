@@ -109,16 +109,16 @@ pub fn build(b: *std.Build) void {
     opencc.linkLibCpp();
     opencc.linkLibrary(marisa);
     // opencc_config
-    const OPENCC_ENABLE_DARTS = 1;
+    const OPENCC_ENABLE_DARTS = true;
     const opencc_config = b.addConfigHeader(.{
         .style = .{ .cmake = .{ .path = "deps/opencc/src/opencc_config.h.in" } },
         .include_path = "deps/opencc/src/opencc_config.h",
     }, .{
-        .OPENCC_ENABLE_DARTS = OPENCC_ENABLE_DARTS,
+        .OPENCC_ENABLE_DARTS = if (OPENCC_ENABLE_DARTS) 1 else null,
     });
     opencc.addConfigHeader(opencc_config);
     // OPENCC_ENABLE_DARTS
-    if (OPENCC_ENABLE_DARTS == 1) {
+    if (OPENCC_ENABLE_DARTS) {
         opencc.addIncludePath("deps/opencc/deps/darts-clone");
         opencc.addCSourceFiles(&.{
             "deps/opencc/src/BinaryDict.cpp",
@@ -180,11 +180,11 @@ pub fn build(b: *std.Build) void {
         .style = .blank,
         .include_path = "deps/leveldb/port/port_config.h",
     }, .{
-        .HAVE_FDATASYNC = 0,
-        .HAVE_FULLFSYNC = 0,
-        .HAVE_O_CLOEXEC = 0,
-        .HAVE_CRC32C = 0,
-        .HAVE_SNAPPY = 0,
+        .HAVE_FDATASYNC = null,
+        .HAVE_FULLFSYNC = null,
+        .HAVE_O_CLOEXEC = null,
+        .HAVE_CRC32C = null,
+        .HAVE_SNAPPY = null,
     });
     leveldb.addConfigHeader(port_config);
     leveldb.addIncludePath("deps/leveldb/include");
@@ -393,6 +393,15 @@ pub fn build(b: *std.Build) void {
     // lib.addIncludePath("deps/marisa-trie/include");
     // lib.addIncludePath("deps/opencc/src");
     // lib.addIncludePath("deps/leveldb/include");
+    const build_config = b.addConfigHeader(.{
+        .style = .{ .cmake = .{ .path = "src/rime/build_config.h.in" } },
+        .include_path = "src/rime/build_config.h",
+    }, .{
+        .RIME_BOOST_SIGNALS2 = null,
+        .RIME_ENABLE_LOGGING = null,
+        .RIME_DATA_DIR = "rime-data",
+        .RIME_PLUGINS_DIR = "rime-plugins",
+    });
     lib.addIncludePath("include");
     lib.addIncludePath("zig-out/include/opencc");
     lib.addIncludePath("src");
@@ -408,6 +417,7 @@ pub fn build(b: *std.Build) void {
     // b.installArtifact(marisa);
     // b.installArtifact(opencc);
     // b.installArtifact(leveldb);
+    lib.installConfigHeader(build_config, .{ .dest_rel_path = "../../src/rime/build_config.h" });
     lib.installHeader("src/rime_api.h", "rime_api.h");
     lib.installHeader("src/rime_levers_api.h", "rime_levers_api.h");
     b.installArtifact(lib);

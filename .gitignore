@@ -13,3 +13,4 @@ node_modules/
 *~
 .*.swp
 zig-*/
+src/rime/build_config.h
